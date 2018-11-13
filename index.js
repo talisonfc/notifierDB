@@ -1,36 +1,41 @@
 var app = require("express")()
 var http = require("http").Server(app)
 var io = require("socket.io")(http)
+var bodyParse = require("body-parser")
 
 clients = []
+const port = 8080
+
+app.use(bodyParse.json())
 
 app.get("/", (req, res)=>{
-    "hello worl"
+    "notifyDB ONLINE"
 })
 
-app.get("/send", (req, res)=>{
-    application = req.query.application
-    data = req.query.data
+app.post("/send", (req, res)=>{
 
-    if(application != undefined){
-        clients[0].emit("message", data)
+    data = req.body
+    console.log(data)
+    if(data!=undefined){
+        io.emit("message", JSON.stringify({payload: data}))
     }
-    
-    console.log(application)
-    res.end("hello world send")
+    else{
+        io.emit("message", JSON.stringify({payload: null}))
+    }
+
+    res.json({result: "data sent"})
 })
 
 io.on("connection", (socket)=>{
     console.log(socket.client.conn.id)
     clients.push(socket)
     socket.emit("connection", socket.client.conn.id)
+    socket.on("disconnect", ()=>{
+        console.listen("disconnecting")
+    })
 })
 
-function send(id, socket){
-    // setTimeout(()=>{
-    //     socket.emit("messege", `tudo bem ${id}`)
-    //     send(id+1, socket)
-    // },1000)
-}
 
-http.listen(8080)
+http.listen(port, ()=>{
+    console.log(`Servidor iniciado na porta ${port}`)
+})

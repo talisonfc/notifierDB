@@ -9,6 +9,7 @@
   "author": "Talison F. Costa",
   "license": "ISC",
   "dependencies": {
+    "body-parse": "^0.1.0",
     "express": "^4.16.3",
     "nodemon": "^1.18.4",
     "socket.io": "^2.1.1"
