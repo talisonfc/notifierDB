@@ -4,6 +4,7 @@ var io = require("socket.io")(http)
 var bodyParse = require("body-parser")
 
 clients = []
+const host = '172.21.254.99'
 const port = 8080
 
 app.use(bodyParse.json())
@@ -27,15 +28,33 @@ app.post("/send", (req, res)=>{
 })
 
 io.on("connection", (socket)=>{
-    console.log(socket.client.conn.id)
+    console.log(`client ${socket.client.conn.id} connected`)
     clients.push(socket)
     socket.emit("connection", socket.client.conn.id)
     socket.on("disconnect", ()=>{
-        console.listen("disconnecting")
+        console.log(`client ${socket.client.conn.id} disconnected`)
     })
+    /*
+    socket.on("connect", (data)=>{
+        searchClient(socket).then(sk=>{
+            
+        })
+    })
+    */
 })
 
 
-http.listen(port, ()=>{
+http.listen(port, host, ()=>{
     console.log(`Servidor iniciado na porta ${port}`)
 })
+
+function searchClient(socket){
+    return new Promise((resolve, reject)=>{
+        clients.forEach(sk=>{
+            if(sk.client.conn.id==socket.client.conn.id){
+                resolve(socket)
+            }
+        })
+        reject(undefined)
+    })
+}
