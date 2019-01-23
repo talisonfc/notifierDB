@@ -1,0 +1,18 @@
+
+<ion-header>
+  <ion-navbar>
+    <ion-title>Processos</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor='let processo of processos'>
+      <div>{{processo.motivo}}</div>
+      <div class="small-text">{{processo.numero}}</div>
+      <div class="small-text">{{processo.descricao}}</div>
+    </ion-item>
+  </ion-list>
+</ion-content>
