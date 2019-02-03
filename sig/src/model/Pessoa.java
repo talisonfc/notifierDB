@@ -56,7 +56,7 @@ public class Pessoa {
 		return enderecos;
 	}
 
-	public void setEnderecos(ArrayList<Endereco> enderecos) {
+	public void setEnderecos(List<Endereco> enderecos) {
 		this.enderecos = enderecos;
 	}
 

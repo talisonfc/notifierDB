@@ -26,11 +26,10 @@ r = requests.post(url, data=json.dumps(payload), headers=headers)
 $$ language plpythonu;
 */
 
-/*
 CREATE TRIGGER sendchange AFTER INSERT OR UPDATE
-   ON usuario FOR EACH ROW
-   EXECUTE PROCEDURE sendchange ('pje','usuario');
-*/
+   ON pessoa FOR EACH ROW
+   EXECUTE PROCEDURE sendchange ('pje-pessoa');
+
 /*
 create trigger sendChangeProcesso after insert on processo for each row execute procedure sendchange ('pje','processo');
 */

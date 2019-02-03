@@ -1,20 +1,20 @@
 create function sendchange()
 returns trigger
-as $$
+as $$e
 import pika
 import json
 
-payload = {'source': TD['args'][0], 'table': TD['args'][1], 'data': TD['new']}
+payload =TD['new']
 
 connection = None
 
 try:
-	connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost', port=5627))
+	connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
 	channel = connection.channel()
-	channel.queue_declare(queue=TD['args'][2])
+	channel.queue_declare(queue=TD['args'][0])
 
 	channel.basic_publish(exchange='',
-		routing_key=TD['args'][3],
+		routing_key=TD['args'][0],
 		body=json.dumps(payload))
 except Exception as e:
 	print('Sender: CONNECTION ERROR')
